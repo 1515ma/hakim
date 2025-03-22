@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Lock } from "lucide-react";
@@ -6,14 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/hooks/use-auth";
+// Importe o novo hook de autenticação
+import { useHakimAuth } from "@/context/HakimAuthContext";
 import { useLanguage } from "@/hooks/use-language";
 import { Link } from "react-router-dom";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
+  // Use o novo hook
+  const { login } = useHakimAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useLanguage();

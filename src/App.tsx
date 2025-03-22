@@ -1,10 +1,11 @@
-
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageProvider } from './context/LanguageContext';
 import { useTheme } from 'next-themes';
 import { Toaster } from 'sonner';
+// Importe o novo provedor de autenticação
+import { HakimAuthProvider } from './context/HakimAuthContext';
 import BookPreview from './components/book-details/BookPreview';
 
 import Index from './pages/Index';
@@ -44,6 +45,8 @@ import ChatHelp from './components/ChatHelp';
 import AudiobookDetails from './pages/AudiobookDetails';
 import RatedBooks from './pages/RatedBooks';
 import Settings from './pages/Settings';
+import AdminPanel from './pages/admin';
+import BookForm from './pages/admin/books/BookForm';
 
 function App() {
   const [blurEnabled, setBlurEnabled] = useState(false);
@@ -92,60 +95,66 @@ function App() {
   }, []);
 
   return (
-    <LanguageProvider>
-      <BrowserRouter>
-        <ThemeProvider defaultTheme={defaultTheme}>
-          <AnimatedCursor />
-          <ChatHelp />
-          <div className={`min-h-screen ${blurEnabled ? 'backdrop-blur-xl' : ''}`}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/support" element={<Support />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/explore" element={<Explore />} />
-              <Route path="/categories" element={<Categories />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/careers" element={<Careers />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/library" element={<Library />} />
-              <Route path="/rated-books" element={<RatedBooks />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/audiobook/:id" element={<AudiobookDetails />} />
-              <Route path="/book-details/:id" element={<BookDetails />} />
-              <Route path="/new-releases" element={<NewReleases />} />
-              <Route path="/bestsellers" element={<Bestsellers />} />
-              <Route path="/all-audiobooks" element={<AllAudiobooks />} />
-              <Route path="/categories/fiction" element={<Fiction />} />
-              <Route path="/categories/non-fiction" element={<NonFiction />} />
-              <Route path="/categories/mystery-thriller" element={<MysteryThriller />} />
-              <Route path="/categories/science-fiction" element={<SciFi />} />
-              <Route path="/categories/fantasy" element={<Fantasy />} />
-              <Route path="/categories/romance" element={<Romance />} />
-              <Route path="/categories/biography" element={<Biography />} />
-              <Route path="/categories/history" element={<History />} />
-              <Route path="/categories/self-help" element={<SelfHelp />} />
-              <Route path="/categories/business" element={<Business />} />
-              <Route path="/categories/cookbooks" element={<Cookbooks />} />
-              <Route path="/categories/horror" element={<Horror />} />
-              <Route path="/categories/technology" element={<Technology />} />
-              <Route path="/categories/mystery" element={<Mystery />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </div>
-          <BookPreview 
-            isPreviewPlaying={globalPreviewState.isPlaying}
-            title={globalPreviewState.title}
-            author={globalPreviewState.author}
-            coverImage={globalPreviewState.coverImage}
-          />
-          <Toaster richColors />
-        </ThemeProvider>
-      </BrowserRouter>
-    </LanguageProvider>
+    <HakimAuthProvider>
+      <LanguageProvider>
+        <BrowserRouter>
+          <ThemeProvider defaultTheme={defaultTheme}>
+            <AnimatedCursor />
+            <ChatHelp />
+            <div className={`min-h-screen ${blurEnabled ? 'backdrop-blur-xl' : ''}`}>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/support" element={<Support />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/explore" element={<Explore />} />
+                <Route path="/categories" element={<Categories />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/careers" element={<Careers />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/library" element={<Library />} />
+                <Route path="/rated-books" element={<RatedBooks />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/audiobook/:id" element={<AudiobookDetails />} />
+                <Route path="/book-details/:id" element={<BookDetails />} />
+                <Route path="/new-releases" element={<NewReleases />} />
+                <Route path="/bestsellers" element={<Bestsellers />} />
+                <Route path="/all-audiobooks" element={<AllAudiobooks />} />
+                <Route path="/categories/fiction" element={<Fiction />} />
+                <Route path="/categories/non-fiction" element={<NonFiction />} />
+                <Route path="/categories/mystery-thriller" element={<MysteryThriller />} />
+                <Route path="/categories/science-fiction" element={<SciFi />} />
+                <Route path="/categories/fantasy" element={<Fantasy />} />
+                <Route path="/categories/romance" element={<Romance />} />
+                <Route path="/categories/biography" element={<Biography />} />
+                <Route path="/categories/history" element={<History />} />
+                <Route path="/categories/self-help" element={<SelfHelp />} />
+                <Route path="/categories/business" element={<Business />} />
+                <Route path="/categories/cookbooks" element={<Cookbooks />} />
+                <Route path="/categories/horror" element={<Horror />} />
+                <Route path="/categories/technology" element={<Technology />} />
+                <Route path="/categories/mystery" element={<Mystery />} />
+                {/* Adicione as rotas de administração */}
+                <Route path="/admin" element={<AdminPanel />} />
+                <Route path="/admin/books/new" element={<BookForm />} />
+                <Route path="/admin/books/:id" element={<BookForm />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </div>
+            <BookPreview 
+              isPreviewPlaying={globalPreviewState.isPlaying}
+              title={globalPreviewState.title}
+              author={globalPreviewState.author}
+              coverImage={globalPreviewState.coverImage}
+            />
+            <Toaster richColors />
+          </ThemeProvider>
+        </BrowserRouter>
+      </LanguageProvider>
+    </HakimAuthProvider>
   );
 }
 

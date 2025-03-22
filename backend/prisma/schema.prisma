@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(uuid())
+  email          String          @unique
+  username       String?
+  password       String
+  role           Role            @default(USER)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  library        Library[]
+  ratings        Rating[]
+  subscriptions  Subscription[]
+
+  @@map("users")
+}
+
+model Book {
+  id             String          @id @default(uuid())
+  title          String
+  author         String
+  coverImage     String
+  duration       String
+  rating         Float           @default(0)
+  category       String?
+  description    String
+  releaseDate    String?
+  narrator       String?
+  additionalText String?
+  reviews        Int             @default(0)
+  audioFile      String?         // URL para o arquivo de áudio
+  previewFile    String?         // URL para o preview do áudio
+  isPublished    Boolean         @default(true)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  library        Library[]
+  ratings        Rating[]
+
+  @@map("books")
+}
+
+model Library {
+  id        String    @id @default(uuid())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  book      Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId    String
+  addedAt   DateTime  @default(now())
+
+  @@unique([userId, bookId])
+  @@map("library")
+}
+
+model Rating {
+  id        String    @id @default(uuid())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  book      Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId    String
+  isLiked   Boolean   // true para "gostei", false para "não gostei"
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([userId, bookId])
+  @@map("ratings")
+}
+
+model Subscription {
+  id         String     @id @default(uuid())
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  planType   PlanType   @default(MONTHLY)
+  startDate  DateTime
+  endDate    DateTime
+  status     SubStatus  @default(ACTIVE)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@map("subscriptions")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum PlanType {
+  MONTHLY
+  ANNUAL
+}
+
+enum SubStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+}

@@ -1,4 +1,3 @@
-
 export interface Book {
   id: string;
   title: string;
@@ -12,4 +11,9 @@ export interface Book {
   narrator?: string;
   additionalText?: string;
   reviews?: number;
+  isPublished?: boolean; // Adicionado isPublished
+  audioFile?: string;    // Adicionado audioFile
+  previewFile?: string;  // Adicionado previewFile
+  createdAt?: string;    // Adicionado createdAt
+  updatedAt?: string;    // Adicionado updatedAt
 }
