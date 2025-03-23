@@ -1,53 +1,68 @@
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import enTranslations from '../translations/en';
+import ptTranslations from '../translations/pt';
+import { getTranslation } from '../utils/translationUtils';
 
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { getTranslation, translateText as translate } from '@/utils/translationUtils';
-import { Language } from '@/translations/types';
+type Language = 'en' | 'pt';
 
-export interface LanguageContextType {
+interface Translations {
+  [key: string]: string;
+}
+
+interface LanguageContextType {
   language: Language;
-  setLanguage: (lang: Language) => void;
+  setLanguage: (language: Language) => void;
   t: (key: string) => string;
-  translateText: (text: string) => Promise<string>;
-  isTranslating: boolean;
+  translations: {
+    en: Translations;
+    pt: Translations;
+  };
 }
 
-export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-interface LanguageProviderProps {
-  children: ReactNode;
-}
+export const LanguageProvider = ({ children }: { children: ReactNode }) => {
+  const [language, setLanguage] = useState<Language>('en');
 
-export const LanguageProvider = ({ children }: LanguageProviderProps) => {
-  // Get initial language from localStorage or default to 'en'
-  const [language, setLanguage] = useState<Language>(() => {
-    const savedLanguage = localStorage.getItem('language');
-    return (savedLanguage as Language) || 'en';
-  });
-  const [isTranslating, setIsTranslating] = useState(false);
-
-  // Save language to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem('language', language);
-    // Update html lang attribute
-    document.documentElement.lang = language;
-  }, [language]);
-
-  // Translation function using predefined translations
-  const t = (key: string): string => {
-    return getTranslation(key, language);
+  // Define as traduções disponíveis
+  const translations = {
+    en: enTranslations,
+    pt: ptTranslations
   };
 
-  // Function to translate arbitrary text using DeepL API
-  const translateText = async (text: string): Promise<string> => {
-    setIsTranslating(true);
-    const result = await translate(text, language);
-    setIsTranslating(false);
-    return result;
+  // Inicializa o idioma com a preferência do usuário ou do navegador
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('hakim-language');
+    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'pt')) {
+      setLanguage(savedLanguage);
+    } else {
+      // Verifica o idioma do navegador
+      const browserLanguage = navigator.language.split('-')[0];
+      setLanguage(browserLanguage === 'pt' ? 'pt' : 'en');
+    }
+  }, []);
+
+  // Salva a preferência do usuário quando o idioma muda
+  useEffect(() => {
+    localStorage.setItem('hakim-language', language);
+  }, [language]);
+
+  // Função para obter a tradução de uma chave
+  const t = (key: string): string => {
+    return getTranslation(translations[language], key);
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t, translateText, isTranslating }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, translations }}>
       {children}
     </LanguageContext.Provider>
   );
+};
+
+export const useLanguage = () => {
+  const context = useContext(LanguageContext);
+  if (context === undefined) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
 };

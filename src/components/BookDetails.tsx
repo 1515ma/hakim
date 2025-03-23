@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from "@/hooks/use-language";
-import { useAuth } from '@/hooks/use-auth';
+import { useHakimAuth } from '@/context/HakimAuthContext';
 import { Book } from "@/types/book";
 import BookTags from './book-details/BookTags';
 import BookActions from './book-details/BookActions';
@@ -19,14 +18,23 @@ interface BookDetailsProps {
 const BookDetails = ({ book, onLibraryUpdate }: BookDetailsProps) => {
   const { t } = useLanguage();
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
-  const { isLoggedIn, addToLibrary } = useAuth();
+  const { isLoggedIn, addToLibrary } = useHakimAuth();
   const navigate = useNavigate();
   
+  // Validação defensiva
+  if (!book || !book.id) {
+    return (
+      <div className="md:col-span-2 h-full p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/5 shadow-2xl">
+        <p className="text-center text-foreground/70">Livro não disponível</p>
+      </div>
+    );
+  }
+  
   const togglePreview = () => {
-    // Immediately update the state for faster UI response
+    // Atualizar imediatamente o estado para resposta de UI mais rápida
     setIsPreviewPlaying(!isPreviewPlaying);
     
-    // Store the state in localStorage to persist across page navigation
+    // Armazenar o estado no localStorage para persistir entre navegações
     if (!isPreviewPlaying) {
       localStorage.setItem('previewPlaying', JSON.stringify({
         isPlaying: true,
@@ -36,18 +44,22 @@ const BookDetails = ({ book, onLibraryUpdate }: BookDetailsProps) => {
         coverImage: book.coverImage
       }));
     } else {
-      // Remove from localStorage immediately
+      // Remover do localStorage imediatamente
       localStorage.removeItem('previewPlaying');
     }
   };
 
-  // Check for active preview on component mount
+  // Verificar preview ativo ao montar o componente
   useEffect(() => {
     const storedPreview = localStorage.getItem('previewPlaying');
     if (storedPreview) {
-      const previewData = JSON.parse(storedPreview);
-      if (previewData.bookId === book.id) {
-        setIsPreviewPlaying(true);
+      try {
+        const previewData = JSON.parse(storedPreview);
+        if (previewData.bookId === book.id) {
+          setIsPreviewPlaying(true);
+        }
+      } catch (error) {
+        console.error('Erro ao processar dados de preview:', error);
       }
     }
   }, [book.id]);
@@ -62,10 +74,15 @@ const BookDetails = ({ book, onLibraryUpdate }: BookDetailsProps) => {
       return;
     }
     
-    addToLibrary(book.id);
-    
-    if (onLibraryUpdate) {
-      onLibraryUpdate();
+    try {
+      addToLibrary(book.id);
+      
+      if (onLibraryUpdate) {
+        onLibraryUpdate();
+      }
+    } catch (error) {
+      console.error('Erro ao adicionar à biblioteca:', error);
+      toast.error('Erro ao adicionar à biblioteca');
     }
   };
 
@@ -74,7 +91,7 @@ const BookDetails = ({ book, onLibraryUpdate }: BookDetailsProps) => {
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-shrink-0 flex flex-col gap-4">
           <img 
-            src={book.coverImage} 
+            src={book.coverImage || 'https://via.placeholder.com/160x240'} 
             alt={book.title} 
             className="w-40 h-60 object-cover rounded-xl shadow-xl border border-white/10 hover:shadow-2xl transition-all duration-300" 
           />
@@ -106,14 +123,14 @@ const BookDetails = ({ book, onLibraryUpdate }: BookDetailsProps) => {
           <BookTags 
             rating={book.rating}
             duration={book.duration}
-            category={book.category}
-            releaseDate={book.releaseDate}
+            category={book.category || ''}
+            releaseDate={book.releaseDate || ''}
           />
           
           <div className="my-4 glass-dark p-5 rounded-lg backdrop-blur-md shadow-inner animate-fade-in">
             <BookDescription 
               description={book.description}
-              additionalText={book.additionalText}
+              additionalText={book.additionalText || ''}
             />
           </div>
         </div>

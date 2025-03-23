@@ -112,28 +112,69 @@ export function HakimAuthProvider({ children }: { children: ReactNode }) {
     setHasActiveSubscription(false);
   };
 
-  // Gerenciamento de biblioteca
-  const addToLibrary = async (bookId: string) => {
-    if (!isLoggedIn) return;
-    // Implementar quando tiver backend
-    await delay(300);
-    return;
-  };
+// Gera a chave específica do usuário para a biblioteca
+const getUserLibraryKey = (userId) => {
+  return `userLibrary_${userId}`;
+};
 
-  const removeFromLibrary = async (bookId: string) => {
-    if (!isLoggedIn) return;
-    // Implementar quando tiver backend
-    await delay(300);
-    return;
-  };
+// Função para adicionar livro à biblioteca
+const addToLibrary = async (bookId: string) => {
+  if (!isLoggedIn || !user?.id) return;
+  
+  try {
+    const libraryKey = getUserLibraryKey(user.id);
+    // Persistir no localStorage para consistência sem backend
+    const libraryItems = JSON.parse(localStorage.getItem(libraryKey) || '[]');
+    if (!libraryItems.includes(bookId)) {
+      libraryItems.push(bookId);
+      localStorage.setItem(libraryKey, JSON.stringify(libraryItems));
+    }
+    
+    // Quando tiver backend implementado:
+    // await libraryAPI.addToLibrary(bookId);
+  } catch (error) {
+    console.error('Erro ao adicionar livro à biblioteca:', error);
+    throw error;
+  }
+};
 
-  const checkBookInLibrary = async (bookId: string) => {
-    if (!isLoggedIn) return false;
-    // Implementar quando tiver backend
-    await delay(300);
-    return Math.random() > 0.5; // Simulação
-  };
+// Função para remover livro da biblioteca
+const removeFromLibrary = async (bookId: string) => {
+  if (!isLoggedIn || !user?.id) return;
+  
+  try {
+    const libraryKey = getUserLibraryKey(user.id);
+    // Persistir no localStorage para consistência sem backend
+    const libraryItems = JSON.parse(localStorage.getItem(libraryKey) || '[]');
+    const updatedItems = libraryItems.filter(id => id !== bookId);
+    localStorage.setItem(libraryKey, JSON.stringify(updatedItems));
+    
+    // Quando tiver backend implementado:
+    // await libraryAPI.removeFromLibrary(bookId);
+  } catch (error) {
+    console.error('Erro ao remover livro da biblioteca:', error);
+    throw error;
+  }
+};
 
+// Função para verificar se um livro está na biblioteca
+const checkBookInLibrary = async (bookId: string) => {
+  if (!isLoggedIn || !user?.id) return false;
+  
+  try {
+    const libraryKey = getUserLibraryKey(user.id);
+    // Verificar no localStorage para consistência sem backend
+    const libraryItems = JSON.parse(localStorage.getItem(libraryKey) || '[]');
+    return libraryItems.includes(bookId);
+    
+    // Quando tiver backend implementado:
+    // const { inLibrary } = await libraryAPI.checkBookInLibrary(bookId);
+    // return inLibrary;
+  } catch (error) {
+    console.error('Erro ao verificar livro na biblioteca:', error);
+    return false;
+  }
+};
   // Atualizar perfil
   const updateProfile = async () => {
     if (!isLoggedIn) return;

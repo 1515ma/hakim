@@ -1,34 +1,40 @@
+import { useNavigate } from 'react-router-dom';
+import { BookOpenText, Bookmark } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/hooks/use-language';
 
-import { useLanguage } from "@/hooks/use-language";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { BookOpenText } from "lucide-react";
-import { motion } from "framer-motion";
-
-const LibraryEmptyState = () => {
+const EmptyLibrary = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   
+  const handleExplore = () => {
+    navigate('/explore');
+  };
+
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="text-center py-16 bg-hakim-dark/10 rounded-xl"
-    >
-      <BookOpenText className="h-16 w-16 mx-auto mb-4 text-hakim-light/50" />
-      <h2 className="text-xl font-semibold mb-2">{t('yourLibraryIsEmpty')}</h2>
-      <p className="max-w-md mx-auto mb-6 text-foreground/70">
-        {t('browseAudiobooksToAddToLibrary')}
+    <div className="py-16 flex flex-col items-center text-center max-w-md mx-auto">
+      <div className="h-20 w-20 rounded-full bg-accent/10 flex items-center justify-center mb-6">
+        <Bookmark className="h-10 w-10 text-accent" />
+      </div>
+      
+      <h2 className="text-2xl font-bold mb-3">
+        {t('yourLibraryIsEmpty') || "Your library is empty"}
+      </h2>
+      
+      <p className="text-foreground/70 mb-8">
+        {t('libraryEmptyDescription') || 
+          "Start building your personal collection by adding audiobooks you want to listen to."}
       </p>
+      
       <Button 
-        onClick={() => navigate('/explore')}
-        variant="default"
+        className="flex items-center"
+        onClick={handleExplore}
       >
-        {t('exploreAudiobooks')}
+        <BookOpenText className="mr-2 h-4 w-4" />
+        {t('exploreCatalog') || "Explore Catalog"}
       </Button>
-    </motion.div>
+    </div>
   );
 };
 
-export default LibraryEmptyState;
+export default EmptyLibrary;

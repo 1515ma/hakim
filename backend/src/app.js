@@ -1,35 +1,40 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const authRoutes = require('./routes/authRoutes');
-const bookRoutes = require('./routes/bookRoutes');
-const libraryRoutes = require('./routes/libraryRoutes');
-const ratingRoutes = require('./routes/ratingRoutes');
-const subscriptionRoutes = require('./routes/subscriptionRoutes');
-const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
-// Middleware
+// Middleware básico
 app.use(morgan('dev'));
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
-}));
+app.use(cors());
 app.use(express.json());
-
-// Rotas
-app.use('/api/auth', authRoutes);
-app.use('/api/books', bookRoutes);
-app.use('/api/library', libraryRoutes);
-app.use('/api/ratings', ratingRoutes);
-app.use('/api/subscriptions', subscriptionRoutes);
-app.use('/api/admin', adminRoutes);
 
 // Rota para verificar se a API está funcionando
 app.get('/', (req, res) => {
   res.json({ message: 'Hakim API está funcionando!' });
 });
+
+// Depois que está funcionando, adicione as rotas uma por uma para identificar qual está com problema
+// Descomente uma rota por vez para testar
+/*
+const authRoutes = require('./routes/authRoutes');
+app.use('/api/auth', authRoutes);
+
+const bookRoutes = require('./routes/bookRoutes');
+app.use('/api/books', bookRoutes);
+
+const libraryRoutes = require('./routes/libraryRoutes');
+app.use('/api/library', libraryRoutes);
+
+const ratingRoutes = require('./routes/ratingRoutes');
+app.use('/api/ratings', ratingRoutes);
+
+const subscriptionRoutes = require('./routes/subscriptionRoutes');
+app.use('/api/subscriptions', subscriptionRoutes);
+
+const adminRoutes = require('./routes/adminRoutes');
+app.use('/api/admin', adminRoutes);
+*/
 
 // Middleware de tratamento de erros
 app.use((err, req, res, next) => {

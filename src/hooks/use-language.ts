@@ -1,11 +1,6 @@
+// Este arquivo apenas re-exporta o hook do contexto
+// para manter a compatibilidade com importações existentes
 
-import { useContext } from 'react';
-import { LanguageContext, LanguageContextType } from '@/context/LanguageContext';
+import { useLanguage as useLanguageFromContext } from '../context/LanguageContext';
 
-export const useLanguage = () => {
-  const context = useContext(LanguageContext);
-  if (context === undefined) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
-  }
-  return context;
-};
+export const useLanguage = useLanguageFromContext;
