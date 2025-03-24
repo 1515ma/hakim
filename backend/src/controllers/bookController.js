@@ -1,4 +1,4 @@
-const prisma = require('../db');
+import prisma from '../db.js';
 
 // Obter todos os livros com paginação
 const getAllBooks = async (req, res) => {
@@ -196,7 +196,7 @@ const getNewReleases = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getAllBooks,
   getBooksByCategory,
   getBookById,

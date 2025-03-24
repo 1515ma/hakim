@@ -1,4 +1,4 @@
-const prisma = require('../db');
+import prisma from '../db.js';
 
 // Obter a assinatura atual do usuário
 const getCurrentSubscription = async (req, res) => {
@@ -152,7 +152,7 @@ const checkAccess = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getCurrentSubscription,
   createSubscription,
   cancelSubscription,

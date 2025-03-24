@@ -1,4 +1,4 @@
-const prisma = require('../db');
+import prisma from '../db.js';
 
 // Obter todos os livros na biblioteca do usuário
 const getUserLibrary = async (req, res) => {
@@ -145,7 +145,7 @@ const checkBookInLibrary = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getUserLibrary,
   addToLibrary,
   removeFromLibrary,

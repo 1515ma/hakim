@@ -1,5 +1,5 @@
-const { verifyToken } = require('../utils/jwt');
-const prisma = require('../db');
+import { verifyToken } from '../utils/jwt.js';
+import prisma from '../db.js';
 
 // Middleware para verificar se o usuário está autenticado
 const authenticate = async (req, res, next) => {
@@ -61,7 +61,7 @@ const checkSubscription = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export {
   authenticate,
   checkSubscription
 };

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Search, CreditCard, BookOpen } from 'lucide-react';
-import { adminAPI } from '@/services/api';
+import { adminAPI } from '@/services/api/adminAPI';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';

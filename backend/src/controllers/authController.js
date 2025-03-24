@@ -1,6 +1,6 @@
-const bcrypt = require('bcryptjs');
-const prisma = require('../db');
-const { generateToken } = require('../utils/jwt');
+import bcrypt from 'bcryptjs';
+import prisma from '../db.js';
+import { generateToken } from '../utils/jwt.js';
 
 // Registrar novo usuário
 const register = async (req, res) => {
@@ -143,7 +143,7 @@ const getProfile = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   register,
   login,
   getProfile

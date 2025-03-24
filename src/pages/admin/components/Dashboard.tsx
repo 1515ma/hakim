@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BookOpen, Users, CreditCard, RefreshCw } from 'lucide-react';
-import { adminAPI } from '@/services/api';
+import { adminAPI } from '@/services/api/api';
 import { Book } from '@/types/book';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

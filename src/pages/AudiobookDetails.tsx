@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import BookDetails from '@/components/BookDetails';
 import { Book } from '@/types/book';
-import { getBookById } from '@/data/books';
+import { booksAPI } from '@/services/api/api';
 import { useHakimAuth } from '@/context/HakimAuthContext';
 
 const AudiobookDetails = () => {
@@ -25,13 +25,8 @@ const AudiobookDetails = () => {
       try {
         setIsLoading(true);
         
-        // Buscar detalhes do livro
-        // No futuro, substituir por chamada API real:
-        // const response = await booksAPI.getBookById(id);
-        // setBook(response);
-        
-        // Por enquanto, usando dados mockados:
-        const foundBook = getBookById(id);
+        // Buscar detalhes do livro do backend
+        const foundBook = await booksAPI.getBookById(id);
         
         if (!foundBook) {
           navigate('/not-found');

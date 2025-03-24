@@ -1,13 +1,14 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import TrendingSection from '@/components/TrendingSection';
 import Footer from '@/components/Footer';
 import { BookOpen, Bookmark, BookAudio, Volume2 } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     setIsLoaded(true);
@@ -16,23 +17,23 @@ const Index = () => {
   const features = [
     {
       icon: <BookAudio className="w-10 h-10 text-accent" />,
-      title: 'Curated Collection',
-      description: 'Access thousands of premium audiobooks across every genre, curated by experts.'
+      title: t('curatedCollection'),
+      description: t('curatedCollectionDesc')
     },
     {
       icon: <Volume2 className="w-10 h-10 text-accent" />,
-      title: 'Studio Quality',
-      description: 'Experience immersive narration with studio-quality sound and professional voice actors.'
+      title: t('studioQuality'),
+      description: t('studioQualityDesc')
     },
     {
       icon: <Bookmark className="w-10 h-10 text-accent" />,
-      title: 'Smart Bookmarks',
-      description: 'Continue exactly where you left off, with cloud syncing across all your devices.'
+      title: t('smartBookmarks'),
+      description: t('smartBookmarksDesc')
     },
     {
       icon: <BookOpen className="w-10 h-10 text-accent" />,
-      title: 'Exclusive Titles',
-      description: "Enjoy exclusive audiobooks and original productions you won't find anywhere else."
+      title: t('exclusiveTitles'),
+      description: t('exclusiveTitlesDesc')
     }
   ];
 
@@ -46,9 +47,9 @@ const Index = () => {
         <section className="py-16 bg-secondary/50">
           <div className="container mx-auto px-4 md:px-6">
             <div className={`text-center max-w-3xl mx-auto mb-12 ${isLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">Immerse Yourself in Stories</h2>
+              <h2 className="text-2xl md:text-3xl font-bold mb-4">{t('immerseYourself')}</h2>
               <p className="text-lg text-foreground/70">
-                Hakim brings stories to life with immersive audiobook experiences that transport you to new worlds.
+                {t('immerseDesc')}
               </p>
             </div>
             
@@ -68,6 +69,7 @@ const Index = () => {
           </div>
         </section>
         
+        {/* Esta seção agora busca dados reais do banco */}
         <TrendingSection />
         
         <section className="py-16 relative overflow-hidden">
@@ -77,75 +79,75 @@ const Index = () => {
           >
             <div className="max-w-4xl mx-auto text-center">
               <div className={`bg-gradient-to-r from-gray-900 to-black p-8 md:p-12 rounded-2xl shadow-xl ${isLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
-                <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">Start Your Listening Journey</h2>
+                <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">{t('startJourney')}</h2>
                 <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
-                  Unlock unlimited access to premium audiobooks with a 30-day free trial. Cancel anytime.
+                  {t('startJourneyDesc')}
                 </p>
                 <div className="flex flex-col md:flex-row gap-4 justify-center">
                   <div className="bg-white/10 backdrop-blur p-6 rounded-xl text-white border border-white/20">
-                    <h3 className="text-xl font-bold mb-2">Monthly</h3>
-                    <p className="text-white/70 mb-4">Access to all audiobooks</p>
+                    <h3 className="text-xl font-bold mb-2">{t('monthly')}</h3>
+                    <p className="text-white/70 mb-4">{t('accessToAll')}</p>
                     <div className="mb-4">
                       <span className="text-3xl font-bold">$14.99</span>
-                      <span className="text-white/70"> /month</span>
+                      <span className="text-white/70"> /{t('month')}</span>
                     </div>
                     <ul className="text-sm space-y-2 mb-6">
                       <li className="flex items-center">
                         <svg className="w-4 h-4 mr-2 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                         </svg>
-                        One audiobook credit per month
+                        {t('oneCredit')}
                       </li>
                       <li className="flex items-center">
                         <svg className="w-4 h-4 mr-2 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                         </svg>
-                        30% off additional purchases
+                        {t('discount30')}
                       </li>
                       <li className="flex items-center">
                         <svg className="w-4 h-4 mr-2 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                         </svg>
-                        Unlimited listening to featured titles
+                        {t('unlimitedFeatured')}
                       </li>
                     </ul>
                     <button className="w-full py-3 bg-accent hover:bg-accent/90 text-white rounded-lg font-medium transition-colors">
-                      Start Free Trial
+                      {t('startFreeTrial')}
                     </button>
                   </div>
                   
                   <div className="bg-white/10 backdrop-blur p-6 rounded-xl text-white border border-white/20 relative">
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-accent text-white text-xs font-medium px-3 py-1 rounded-full">
-                      Popular Choice
+                      {t('popularChoice')}
                     </div>
-                    <h3 className="text-xl font-bold mb-2">Annual</h3>
-                    <p className="text-white/70 mb-4">Save 25% yearly</p>
+                    <h3 className="text-xl font-bold mb-2">{t('annual')}</h3>
+                    <p className="text-white/70 mb-4">{t('save25')}</p>
                     <div className="mb-4">
                       <span className="text-3xl font-bold">$149.99</span>
-                      <span className="text-white/70"> /year</span>
+                      <span className="text-white/70"> /{t('year')}</span>
                     </div>
                     <ul className="text-sm space-y-2 mb-6">
                       <li className="flex items-center">
                         <svg className="w-4 h-4 mr-2 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                         </svg>
-                        12 audiobook credits
+                        {t('twelveCredits')}
                       </li>
                       <li className="flex items-center">
                         <svg className="w-4 h-4 mr-2 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                         </svg>
-                        40% off additional purchases
+                        {t('discount40')}
                       </li>
                       <li className="flex items-center">
                         <svg className="w-4 h-4 mr-2 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                         </svg>
-                        Unlimited listening to all featured titles
+                        {t('unlimitedAll')}
                       </li>
                     </ul>
                     <button className="w-full py-3 bg-white hover:bg-white/90 text-accent rounded-lg font-medium transition-colors">
-                      Start Free Trial
+                      {t('startFreeTrial')}
                     </button>
                   </div>
                 </div>

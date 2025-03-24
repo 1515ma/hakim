@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/hooks/use-auth';
-import { adminAPI } from '@/services/api';
+import { adminAPI } from '@/services/api/api';
 import { Button } from '@/components/ui/button';
 import BookList from './components/BookList';
 import UserList from './components/UserList';

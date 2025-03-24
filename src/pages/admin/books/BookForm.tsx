@@ -10,7 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/hooks/use-auth';
-import { adminAPI, booksAPI } from '@/services/api';
+import { adminAPI, booksAPI } from '@/services/api/api';
 import { Book } from '@/types/book';
 import { toast } from 'sonner';
 

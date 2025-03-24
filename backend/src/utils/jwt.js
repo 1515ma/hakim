@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 // Gerar token JWT
 const generateToken = (userId) => {
@@ -18,7 +18,7 @@ const verifyToken = (token) => {
   }
 };
 
-module.exports = {
+export {
   generateToken,
   verifyToken
 };

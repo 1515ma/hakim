@@ -1,13 +1,14 @@
-const express = require('express');
+import express from 'express';
+import { register, login, getProfile } from '../controllers/authController.js';
+import { authenticate } from '../middleware/auth.js';
+
 const router = express.Router();
-const authController = require('../controllers/authController');
-const { authenticate } = require('../middleware/auth');
 
 // Rotas públicas
-router.post('/register', authController.register);
-router.post('/login', authController.login);
+router.post('/register', register);
+router.post('/login', login);
 
 // Rotas protegidas
-router.get('/profile', authenticate, authController.getProfile);
+router.get('/profile', authenticate, getProfile);
 
-module.exports = router;
+export default router;

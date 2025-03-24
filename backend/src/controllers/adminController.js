@@ -1,4 +1,6 @@
-const prisma = require('../db');
+import { PrismaClient } from '@prisma/client';
+// Supondo que seu db.js exporte uma instância do PrismaClient
+import prisma from '../db.js';
 
 // Obter todos os livros (incluindo não publicados)
 const getAllBooks = async (req, res) => {
@@ -270,7 +272,8 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = {
+// Modificado para usar export
+export {
   getAllBooks,
   createBook,
   updateBook,

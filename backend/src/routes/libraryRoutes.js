@@ -1,15 +1,16 @@
-const express = require('express');
+import express from 'express';
+import { getUserLibrary, addToLibrary, removeFromLibrary, checkBookInLibrary } from '../controllers/libraryController.js';
+import { authenticate } from '../middleware/auth.js';
+
 const router = express.Router();
-const libraryController = require('../controllers/libraryController');
-const { authenticate } = require('../middleware/auth');
 
 // Todas as rotas de biblioteca requerem autenticação
 router.use(authenticate);
 
 // Rotas da biblioteca
-router.get('/', libraryController.getUserLibrary);
-router.post('/add', libraryController.addToLibrary);
-router.delete('/:bookId', libraryController.removeFromLibrary);
-router.get('/check/:bookId', libraryController.checkBookInLibrary);
+router.get('/', getUserLibrary);
+router.post('/add', addToLibrary);
+router.delete('/:bookId', removeFromLibrary);
+router.get('/check/:bookId', checkBookInLibrary);
 
-module.exports = router;
+export default router;

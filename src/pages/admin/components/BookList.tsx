@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Edit, Trash2, Search, Eye, CheckCircle, XCircle } from 'lucide-react';
-import { adminAPI } from '@/services/api';
+import { adminAPI } from '@/services/api/api';
 import { Book } from '@/types/book';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
